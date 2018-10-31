@@ -1,0 +1,9 @@
+<script>
+  plot = document.getElementById("plot");
+  Plotly.plot(plot,
+    <%= {:safe, @plotly_data} %>,
+    <%= {:safe, @plotly_layout} %>,
+    <%= {:safe, @plotly_options} %>
+  );
+</script>
+
