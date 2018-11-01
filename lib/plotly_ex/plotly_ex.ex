@@ -10,12 +10,14 @@ defmodule PlotlyEx do
 
   @spec plot([map], map, map) :: no_return
   def plot(data, format \\ %{}, options \\ %{})
-  def plot(data = [_entry = %{}| _], format, options) do
+
+  def plot(data = [_entry = %{} | _], format, options) do
     id = gen_id()
     :ets.insert(@table, {id, data, format, options})
     path = PlotlyExWeb.Router.Helpers.page_path(PlotlyExWeb.Endpoint, :show, id)
     "localhost:4000#{path}"
   end
+
   def plot(entry = %{}, format, options) do
     plot([entry], format, options)
   end
@@ -23,7 +25,7 @@ defmodule PlotlyEx do
   def get_plot(id) do
     @table
     |> :ets.lookup(id)
-    |> List.first
+    |> List.first()
   end
 
   defp gen_id do
