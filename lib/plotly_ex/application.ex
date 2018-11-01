@@ -6,7 +6,7 @@ defmodule PlotlyEx.Application do
 
     children = [
       supervisor(PlotlyExWeb.Endpoint, []),
-      worker(PlotlyEx, [])
+      worker(PlotlyEx.Table, [])
     ]
 
     opts = [strategy: :one_for_one, name: PlotlyEx.Supervisor]

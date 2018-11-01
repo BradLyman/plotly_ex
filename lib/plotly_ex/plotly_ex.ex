@@ -1,13 +1,54 @@
 defmodule PlotlyEx do
   @moduledoc """
   PlotlyEx is a bare-minimum in-between for elixir and Plotly.js.
-
-  Plots are just maps stored in an ETS table which gets rendered into
-  javascript by phoenix.
   """
 
   @table Plots
 
+  @doc """
+  Create a plot with a list of data maps, a format map, and an options app.
+  The maps are just directly serialized into JSON and passed to the plotly.js
+  interface.
+
+  ## Example
+
+  The original javascript example
+
+      Plotly.plot(target,
+        [
+          {
+            x: [1, 2, 3],
+            y: [2, -1, 4]
+          }
+        ],
+        {
+          title: 'some title'
+        },
+        {
+          responsive: true
+        }
+      );
+
+  Has the corresponding elixir
+
+      iex> import PlotlyEx
+      iex> plot(
+      ...>   [
+      ...>     %{
+      ...>         x: [1, 2, 3],
+      ...>         y: [2, -1, 4]
+      ...>     }
+      ...>   ],
+      ...>   {
+      ...>     title: "some title"
+      ...>   },
+      ...>   {
+      ...>     responsive: :true
+      ...>   }
+      ...> )
+      localhost:4000/plots/id
+
+  """
   @spec plot([map], map, map) :: no_return
   def plot(data, format \\ %{}, options \\ %{})
 
@@ -30,17 +71,5 @@ defmodule PlotlyEx do
 
   defp gen_id do
     Integer.to_string(:rand.uniform(100_000_000), 32)
-  end
-
-  use GenServer
-
-  def start_link do
-    GenServer.start_link(PlotlyEx, [], [])
-  end
-
-  @impl true
-  def init(_args) do
-    :ets.new(@table, [:named_table, :public])
-    {:ok, []}
   end
 end

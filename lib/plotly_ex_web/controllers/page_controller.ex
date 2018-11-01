@@ -2,7 +2,6 @@ defmodule PlotlyExWeb.PageController do
   use PlotlyExWeb, :controller
 
   def show(conn, %{"id" => id}) do
-    IO.puts(id)
     {^id, data, layout, options} = PlotlyEx.get_plot(id)
 
     render(conn, "index.html",
